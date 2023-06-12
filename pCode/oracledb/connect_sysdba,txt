@@ -1,0 +1,12 @@
+
+ Do this by setting the standard Oracle environment variables such as ORACLE_HOME and ORACLE_SID and connecting in Python like:
+
+oracledb.init_oracle_client()
+
+conn = oracledb.connect(mode=oracledb.SYSDBA)
+
+This is equivalent to executing the following in SQL*Plus:
+
+CONNECT / AS SYSDBA
+
+

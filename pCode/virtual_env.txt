@@ -1,0 +1,7 @@
+Create virtual env :
+
+python -m venv <directory name>
+
+$ python3 -m venv oracledb
+$ cd oracledb/bin
+$ . activate

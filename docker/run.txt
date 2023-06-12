@@ -1,0 +1,28 @@
+docker run
+
+Create and run a new container from an image
+
+Usage
+
+$ docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
+
+--env , -e 		Set environment variables
+--hostname , -h 		Container host name
+--ip 		IPv4 address (e.g., 172.30.100.104)
+--name 		Assign a name to the container
+--network 		Connect a container to a network
+--publish , -p 		Publish a container’s port(s) to the host
+--privileged 		Give extended privileges to this container
+--volume , -v 		Bind mount a volume
+--rm 		Automatically remove the container when it exits
+--interactive , -i 		Keep STDIN open even if not attached
+--tty , -t 		Allocate a pseudo-TTY
+--detach , -d 		Run container in background and print container ID
+--add-host 		Add a custom host-to-IP mapping (host:ip)
+
+
+eg:
+ $ docker run --name test -it debian
+
+create docker with hostname and ip
+$ docker run -itd --name test --hostname test.demo.com --ip 172.17.0.2 debian

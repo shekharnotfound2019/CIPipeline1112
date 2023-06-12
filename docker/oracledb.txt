@@ -1,12 +1,110 @@
- docker run -d --name oracle-db container-registry.oracle.com/database/enterprise:21.3.0.0
+oracle database:
+
+docker run -itd --name oradb -h oradb23.demo.com -v /u02/ora23/oradata:/opt/oracle/oradata  container-registry.oracle.com/database/free:latest
+
+
+harsh@shekhar-PC:/u01/data/git$ docker run -itd --name oradb -h oradb23.demo.com -v /u02/ora23/oradata:/opt/oracle/oradata  container-registry.oracle.com/database/free:latest
+19132013e166e6b761430691fcdd3650f74811fc690ba2d86486595733e0e5c6
+harsh@shekhar-PC:/u01/data/git$ 
+
+
+harsh@shekhar-PC:/u01/data/git$ docker container ps
+CONTAINER ID   IMAGE                                                COMMAND                  CREATED          STATUS                             PORTS      NAMES
+19132013e166   container-registry.oracle.com/database/free:latest   "/bin/sh -c 'exec $O…"   26 seconds ago   Up 24 seconds (health: starting)   1521/tcp   oradb
+harsh@shekhar-PC:/u01/data/git$ docker logs oradb
+Specify a password to be used for database accounts. Oracle recommends that the password entered should be at least 8 characters in length, contain at least 1 uppercase character, 1 lower case character and 1 digit [0-9]. Note that the same password will be used for SYS, SYSTEM and PDBADMIN accounts:
+Confirm the password:
+Configuring Oracle Listener.
+Listener configuration succeeded.
+Configuring Oracle Database FREE.
+Enter SYS user password: 
+*****************
+Enter SYSTEM user password: 
+*****************
+Enter PDBADMIN User Password: 
+*************** 
+Prepare for db operation
+7% complete
+Copying database files
+harsh@shekhar-PC:/u01/data/git$ 
 
 
 
-podman run --name oracledb \
--P | -p 1531:1521 \
--e ORACLE_PWD=oracle \
--v /u02/ora23/oradata:/opt/oracle/oradata \
-container-registry.oracle.com/database/free:latest
+Create docker image from existing container:
+
+$ docker commit 19132013e166 oracledb23
+
+Create container from image created:
+$ docker run -itd --name oradb2 --hostname oradb2.demo.com --ip 172.17.0.4 -v /u02/ora23/oradata2:/opt/oracle/oradata  oracledb23
+
+$ docker run -itd --name oradb1 --hostname oradb1.demo.com --ip 172.17.0.3 -v /u02/ora23/oradata1:/opt/oracle/oradata  oracledb23
+
+######################################################################
+Create user account in db:
+
+harsh@shekhar-PC:/u02/ora23/oradata1$ docker ps 
+CONTAINER ID   IMAGE        COMMAND                  CREATED          STATUS                    PORTS      NAMES
+aac78520f1f8   oracledb23   "/bin/sh -c 'exec $O…"   33 minutes ago   Up 33 minutes (healthy)   1521/tcp   oradb1
+3a65b0ce6f8e   oracledb23   "/bin/sh -c 'exec $O…"   33 minutes ago   Up 33 minutes (healthy)   1521/tcp   oradb2
+harsh@shekhar-PC:/u02/ora23/oradata1$ 
+
+
+harsh@shekhar-PC:/u02/ora23/oradata1$ docker exec -it oradb1 bash
+bash-4.4$ id
+uid=54321(oracle) gid=54321(oinstall) groups=54321(oinstall),54322(dba),54323(oper),54324(backupdba),54325(dgdba),54326(kmdba),54330(racdba)
+
+bash-4.4$ sqlplus "/as sysdba"
+SQL> show pdbs
+
+    CON_ID CON_NAME			  OPEN MODE  RESTRICTED
+---------- ------------------------------ ---------- ----------
+	 2 PDB$SEED			  READ ONLY  NO
+	 3 FREEPDB1			  READ WRITE NO
+SQL> alter session set container = FREEPDB1;
+SQL> create user shekhar identified by oracle;
+SQL> grant connect to shekhar;
+SQL> grant dba to shekhar;
+
+
+######################################################################3
+
+testing to create with different db name:
+
+docker run -d --name oradb1 \
+ --hostname oradb1.demo.com \
+ --ip 172.17.0.3 \
+ -e ORACLE_SID=test1 \
+ -e ORACLE_PDB=test1pdb \
+ -v /u02/ora23/oradata1:/opt/oracle/oradata \
+oracledb23
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 goldengate:
