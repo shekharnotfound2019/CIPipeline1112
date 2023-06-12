@@ -1,0 +1,77 @@
+Creation Date: 12-Jun-2023
+Updated Date: 12-Jun-2023
+
+Networking overview:
+
+Container networking refers to the ability for containers to connect to and communicate with each other, or to non-Docker workloads.
+
+==============================================
+Published ports:
+
+By default, when you create or run a container using docker create or docker run, the container doesn’t expose any of its ports to the outside world. 
+Use the --publish or -p flag to make a port available to services outside of Docker. 
+This creates a firewall rule in the host, mapping a container port to a port on the Docker host to the outside world. 
+Here are some examples:
+
+-p 8080:80 => Map TCP port 80 in the container to port 8080 on the Docker host.
+
+
+-p 192.168.1.100:8080:80  => Map TCP port 80 in the container to port 8080 on the Docker host for connections to host IP 192.168.1.100.
+
+
+Important:
+===
+
+Publishing container ports is insecure by default. Meaning, when you publish a container’s ports it becomes available not only to the Docker host, but to the outside world as well.
+
+If you include the localhost IP address (127.0.0.1) with the publish flag, only the Docker host can access the published container port.
+
+
+$ docker run -p 127.0.0.1:8080:80 nginx
+
+==============================================
+
+Network drivers overview:
+
+bridge => The default network driver. 
+    If you don’t specify a driver, this is the type of network you are creating. 
+    Bridge networks are commonly used when your application runs in a container that needs to communicate with other containers on the same host.
+
+host => Remove network isolation between the container and the Docker host, and use the host’s networking directly.
+
+
+overlay => Overlay networks connect multiple Docker daemons together and enable Swarm services and containers to communicate across nodes.
+        This strategy removes the need to do OS-level routing. 
+
+none => Completely isolate a container from the host and other containers.
+        none is not available for Swarm services. 
+
+########################################################################
+check network :
+$ docker network ls
+
+create bridge network:
+ $ docker network create --driver bridge alpine-net
+
+inspect network:
+ $ docker network inspect alpine-net
+
+Create network using created network:
+Notice the --network flags. 
+You can only connect to one network during the docker run command, so you need to use docker network connect afterward to connect alpine4 to the bridge network as well.
+
+$ docker run -dit --name alpine4 --network alpine-net alpine ash
+$  docker run -dit --name alpine3 alpine ash
+$ docker network connect bridge alpine4
+
+
+Inspect the bridge network and the alpine-net network again:
+$ docker network inspect bridge
+Containers alpine3 and alpine4 are connected to the bridge network.
+
+
+
+
+host network:
+Create and start the container as a detached process. The --rm option means to remove the container once it exits/stops. The -d flag means to start the container detached (in the background).
+$ docker run --rm -d --network host --name my_nginx nginx
