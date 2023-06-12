@@ -1,0 +1,14 @@
+
+list Docker container:
+$docker container ls 
+$docker container ls -a
+
+Docker container start start:
+$docker container start <container name>
+
+
+Docker container stop start:
+$docker container stop <container name>
+
+Docker container remove start:
+$docker container rm <container name>

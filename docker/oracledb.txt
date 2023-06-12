@@ -1,0 +1,38 @@
+ docker run -d --name oracle-db container-registry.oracle.com/database/enterprise:21.3.0.0
+
+
+
+podman run --name oracledb \
+-P | -p 1531:1521 \
+-e ORACLE_PWD=oracle \
+-v /u02/ora23/oradata:/opt/oracle/oradata \
+container-registry.oracle.com/database/free:latest
+
+
+goldengate:
+
+docker run -dit \
+    --name oragg \
+    -p 80:80 \
+    -p 443:443 \
+    -v /u02/gg/u02:/u02 \
+    -v /u02/gg/u03:/u03 \
+    -v /u02/gg/cert:/etc/nginx/cert \
+    container-registry.oracle.com/goldengate/goldengate-free:21.9.0.0-oracle
+
+
+harsh@shekhar-PC:/u02/gg$ docker logs oragg
+----------------------------------------------------------------------------------
+--  Password for OGG administrative user 'oggadmin' is 'LWhhme/7nlTX-EAcQ'
+----------------------------------------------------------------------------------
+OGG_SECURE_DEPLOYMENT=false
+APP_HOME=/u01/oggf
+APP_DATA_HOME=/u02/oggf
+/u01/oggf/deploymentId
+OGGF_DEPLOYMENT_ID=69a3ead3-b779-47f7-8d03-8c8a39450ec9
+/u02/oggf/certificate /u02/oggf
+Generating a 4096 bit RSA private key
+*****************************************************************************************************************************************++++
+harsh@shekhar-PC:/u02/gg$ 
+
+
