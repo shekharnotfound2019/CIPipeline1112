@@ -1,0 +1,5 @@
+install python2 in ubuntu:
+
+$ sudo apt install python2
+
+===============================================

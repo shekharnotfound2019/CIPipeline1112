@@ -1,3 +1,12 @@
+download oracle linux 8 image:
+$ docker pull oraclelinux:8
+
+Create container with oracle linux:8 :
+
+$ docker run -itd --hostname oel8 --name oel8 oraclelinux:8
+
+
+
 
 list Docker container:
 $docker container ls 
@@ -12,6 +21,9 @@ $docker container stop <container name>
 
 Docker container remove start:
 $docker container rm <container name>
+
+
+
 
 Create docker with hostname: oradb23.demo.com
 $ docker run -itd --name oradb -h oradb23.demo.com -v /u02/ora23/oradata:/opt/oracle/oradata  container-registry.oracle.com/database/free:latest

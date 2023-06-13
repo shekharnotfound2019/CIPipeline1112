@@ -1,5 +1,10 @@
 #/usr/bin/env python3
 import getpass
+import sys
+syspath = '/home/harsh/pCode/venv/lib/python3.10/site-packages'
+
+
+sys.path.append(syspath)
 import oracledb
 
 pw = getpass.getpass("Enter password: ")

@@ -5,3 +5,19 @@ python -m venv <directory name>
 $ python3 -m venv oracledb
 $ cd oracledb/bin
 $ . activate
+
+=====================================
+Create virtualenv using python2:
+
+harsh@shekhar-PC:~/pCode$ virtualenv venv2 --python=python2
+created virtual environment CPython2.7.18.final.0-64 in 198ms
+  creator CPython2Posix(dest=/home/harsh/pCode/venv2, clear=False, no_vcs_ignore=False, global=False)
+  seeder FromAppData(download=False, pip=bundle, setuptools=bundle, wheel=bundle, via=copy, app_data_dir=/home/harsh/.local/share/virtualenv)
+    added seed packages: pip==20.3.4, setuptools==44.1.1, wheel==0.37.1
+  activators BashActivator,CShellActivator,FishActivator,NushellActivator,PowerShellActivator,PythonActivator
+harsh@shekhar-PC:~/pCode$ ls -lrt
+total 8
+drwxrwxr-x 5 harsh harsh 4096 Jun 13 22:21 venv3
+drwxrwxr-x 4 harsh harsh 4096 Jun 13 22:27 venv2
+harsh@shekhar-PC:~/pCode$ 
+
